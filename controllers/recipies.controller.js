@@ -29,3 +29,17 @@ async function getAllrecipes(req,res){
         console.log(err)
     }
 }
+async function getOneRecipe(req,res){
+    try{
+        const oneRecipe = await Recipe.findById(req.params.recipeId).populate('author')
+        if(!oneRecipe){
+            return res.status(404).json({message:'Recipe not Found'})
+        }
+        const reviews = await Review.find({recipe: req.params.recipeId}).populate('author')
+
+        res.status(200).json({recpie: oneRecipe, Reviews: reviews})
+    }catch(err){
+
+        console.log(err)
+    }
+}
