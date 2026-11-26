@@ -21,3 +21,11 @@ async function createRecipe(req,res){
         console.log(err)
     }
 }
+async function getAllrecipes(req,res){
+    try{
+        const allrecipes = await Recipe.find().populate('author')
+        res.status(200).json(allrecipes)
+    }catch(err){
+        console.log(err)
+    }
+}
