@@ -35,7 +35,7 @@ async function getOneRecipe(req,res){
         if(!oneRecipe){
             return res.status(404).json({message:'Recipe not Found'})
         }
-        const reviews = await Review.find({recipe: req.params.recipeId}).populate('author')
+        const reviews = await Review.find({recipe: req.params.recipeId}).populate('owner')
 
         res.status(200).json({recpie: oneRecipe, Reviews: reviews})
     }catch(err){
@@ -91,7 +91,7 @@ async function createOneReview(req,res){
     try{
         const {rating,reviewText} = req.body
         const createdReview = await Review.create({
-            recipe:req.params._id,
+            recipe:req.params.recipeId,
             rating,
             reviewText,
             owner:req.user._id
@@ -110,7 +110,7 @@ async function deleteReview(req,res){
             return res.status(404).json({message:'Review not Found'})
         }
 
-        if(!foundReview.author.equals(req.user._id)){
+        if(!foundReview.owner.equals(req.user._id)){
             return res.status(403).json({message:'You are not Able to delete this review'})
         }
 
