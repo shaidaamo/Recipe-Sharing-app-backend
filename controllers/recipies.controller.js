@@ -43,3 +43,29 @@ async function getOneRecipe(req,res){
         console.log(err)
     }
 }
+async function updateOneRecipe(req,res){
+    try{
+        const foundRecipe = await Recipe.findById(req.params.recipeId)
+
+        if(!foundRecipe){
+            return res.status(404).json({message:'Recipe not Found'})
+        }
+
+        if(!foundRecipe.author.equals(req.user._id)){
+            return res.status(403).json({message:'You are not Able to change this Recipe'})
+        }
+        const { title, description, ingredients,steps,cookTime,category,image} = req.body
+        const updatedRecipe = await Recipe.findByIdAndUpdate(req.params.recipeId,{
+            title,
+            description,
+            ingredients,
+            steps,
+            cookTime,
+            category,
+            image
+        }, {returnDocument: 'after', runValidators:true})
+        res.status(200).json(updatedRecipe)
+    }catch(err){
+        console.log(err)
+    }
+}
