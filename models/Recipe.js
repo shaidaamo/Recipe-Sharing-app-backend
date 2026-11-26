@@ -27,10 +27,6 @@ const recipeSchema = new mongoose.Schema({
   author:{
     type:mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  },
-  Review:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref: 'Review'
   }
 }, {timestamps: true});
 
